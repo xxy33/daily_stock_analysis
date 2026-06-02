@@ -185,13 +185,24 @@ def _matches_model_family(model: str, family: str) -> bool:
     return any(part == family or part.startswith(f"{family}-") for part in _model_parts(model))
 
 
+# Claude Opus 4.8+ deprecates the `temperature` sampling parameter; sending it
+# triggers an Anthropic invalid_request_error ("`temperature` is deprecated for
+# this model"). These families must rely on the provider default instead.
+_TEMPERATURE_DEPRECATED_MODEL_FAMILIES = ("claude-opus-4-8",)
+
+
 def _should_omit_litellm_temperature(model: str) -> bool:
     """Return whether a model family should rely on the provider default temperature."""
-    return any(
+    if any(
         part.startswith(("gpt-5", "gpt5"))
         or part in {"o1", "o3", "o4"}
         or part.startswith(("o1-", "o3-", "o4-"))
         for part in _model_parts(model)
+    ):
+        return True
+    return any(
+        _matches_model_family(model, family)
+        for family in _TEMPERATURE_DEPRECATED_MODEL_FAMILIES
     )
 
 
