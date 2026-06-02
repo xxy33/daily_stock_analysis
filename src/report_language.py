@@ -277,7 +277,7 @@ _REPORT_LABELS: Dict[str, Dict[str, str]] = {
         "action_points_heading": "操作点位",
         "position_advice_heading": "持仓建议",
         "analysis_model_label": "分析模型",
-        "not_investment_advice": "AI生成，仅供参考，不构成投资建议",
+        "not_investment_advice": "",
         "details_report_hint": "详细报告见",
         "financial_summary_heading": "财务摘要",
         "report_date_label": "报告期",

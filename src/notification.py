@@ -1536,11 +1536,10 @@ class NotificationService(
         models = self._collect_models_used(results)
         if models:
             lines.append(f"*{labels['analysis_model_label']}: {', '.join(models)}*")
-        lines.extend([
-            "---",
-            f"*{labels['not_investment_advice']}*",
-            f"*{labels['details_report_hint']} reports/report_{report_date.replace('-', '')}.md*"
-        ])
+        lines.append("---")
+        if labels['not_investment_advice']:
+            lines.append(f"*{labels['not_investment_advice']}*")
+        lines.append(f"*{labels['details_report_hint']} reports/report_{report_date.replace('-', '')}.md*")
 
         content = "\n".join(lines)
 
@@ -1725,7 +1724,8 @@ class NotificationService(
             model_used = normalize_model_used(getattr(result, "model_used", None))
             if model_used:
                 lines.append(f"*{labels['analysis_model_label']}: {model_used}*")
-        lines.append(f"*{labels['not_investment_advice']}*")
+        if labels['not_investment_advice']:
+            lines.append(f"*{labels['not_investment_advice']}*")
 
         return "\n".join(lines)
 
